@@ -10,7 +10,8 @@ export default {
   },
   data() {
     return {
-      books: []
+      books: [],
+      result_title: "Résultats de recherche :"
     }
   },
   methods: {
@@ -57,7 +58,7 @@ export default {
       @simple-search="(query) => simpleSearch(query)"
       />
   </div>
-  <bookshelves :books="books"></bookshelves>
+  <bookshelves :books="books" :title="result_title"></bookshelves>
 </template>
 
 <style scoped> 
@@ -78,6 +79,7 @@ export default {
 .presentation {
   display: flex;
   flex-direction: column;
+  width: 100rem;
 }
 .title {
   font-family: Georgia, 'Times New Roman', Times, serif;

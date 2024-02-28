@@ -1,5 +1,6 @@
 
 <template>
+  <h2>{{ title }}</h2> 
   <div class="book-gallery">
     <div class="gallery-container">
       <div class="gallery" ref="gallery">

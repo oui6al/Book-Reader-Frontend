@@ -15,7 +15,7 @@ export default {
   },
   data() {
     return {
-      htmlContent: '<p>This is some <strong>HTML</strong> content.</p>' + this.bookId,
+      htmlContent: ""
     };
   },
   mounted() {
