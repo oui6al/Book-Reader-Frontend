@@ -38,6 +38,12 @@ export default {
             }
         }
     },
+    mounted(){
+        const query = sessionStorage.getItem('searchQuery');
+        if(query){
+            this.searchQuery = query;
+        }
+    }
 };
 </script>
 
@@ -54,12 +60,13 @@ export default {
 }
 
 .search-bar #input {
-    position: relative;
     border: none;
     border-radius: 5px;
     font-size: 1rem;
     width: 100%;
     margin-left: 1rem;
+    margin-right: 1rem;
+    border-style: solid;
 }
 
 #switch-button {

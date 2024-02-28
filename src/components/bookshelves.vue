@@ -1,7 +1,7 @@
 
 <template>
-  <h2>{{ title }}</h2> 
   <div class="book-gallery">
+    <h2 :title="title">{{ title }} </h2> 
     <div class="gallery-container">
       <div class="gallery" ref="gallery">
         <div v-for="book in books" :key="book.id" class="book-item">
@@ -9,33 +9,24 @@
         </div>
       </div>
     </div>
-    <!--<button class="navigation-button" @click="scrollRight" >
-      <font-awesome-icon icon="chevron-right" size="xxl" />
-    </button>-->
   </div>
 </template>
 
 <script>
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
-
-library.add(faChevronRight);
 
 export default {
   components: {
-    FontAwesomeIcon,
+   
   },
   props: {
+    title: {
+      type: String,
+      required: true,
+    },
     books: {
       type: Array,
       required: true,
     },
-  },
-  data(){
-    return {
-      scrollPosition: 0,
-    }
   },
   methods: {
     readBook(bookId) {
@@ -53,6 +44,7 @@ export default {
   position: relative;
   width: 100%;
   overflow: hidden;
+  margin-top: 3rem;
 }
 
 .gallery-container {
@@ -87,16 +79,5 @@ export default {
   cursor: pointer;
 }
 
-.navigation-button {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  border: none;
-  outline: none;
-  cursor: pointer;
-  width: 60px;
-  height: 60px;
-}
 
 </style>

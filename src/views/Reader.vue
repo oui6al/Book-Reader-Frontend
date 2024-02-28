@@ -13,7 +13,7 @@ import bookReader from "../components/bookReader.vue";
     },
     data() {
       return {
-        bookId: this.$route.params.id
+        bookId: parseInt(this.$route.params.id)
       };
     },
     

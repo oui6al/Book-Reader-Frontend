@@ -11,24 +11,41 @@ export default {
   data() {
     return {
       books: [],
-      result_title: "Résultats de recherche :"
+      result_title: '',
+      
     }
   },
   methods: {
     advancedSearch(searchQuery){
+      sessionStorage.setItem('searchQuery', searchQuery);
+      sessionStorage.setItem('advancedSearch', true);
       axios.post('http://localhost:3000/api/advanced-search/', {query: searchQuery})
       .then((response) => {
         console.log(response.data);
         this.books = response.data;
+        this.result_title = "Résultats de la recherche :"
       })
     },
     simpleSearch(searchQuery){  
+      sessionStorage.setItem('searchQuery', searchQuery);
+      sessionStorage.setItem('advancedSearch', false);
       axios.post('http://localhost:3000/api/search', {query: searchQuery})
       .then((response) => {
         console.log(response.data);
         this.books = response.data;
+        this.result_title = "Résultats de la recherche :"
       })
     }
+  },
+  mounted(){
+    const searchQuery = sessionStorage.getItem('searchQuery');
+    if(searchQuery && sessionStorage.getItem('advancedSearch') === 'true'){
+      this.advancedSearch(sessionStorage.getItem('searchQuery'));
+    }
+    else if(searchQuery && sessionStorage.getItem('advancedSearch') === 'false'){
+      this.simpleSearch(sessionStorage.getItem('searchQuery'));
+    }
+
   }
 }
 
@@ -44,13 +61,13 @@ export default {
       </div>
       <div class="figures-wrapper">
           <div class="figures">
-            <img alt="Brand logo"  src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/1bcea8105505099.5f7afff337b57.jpg" />
+            <img  src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/15ba25105957829.5f851d78e1c3a.jpg" />
           </div>
           <div  id="mid">
-            <img id="mid" alt="Brand logo"  src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/1bcea8105505099.5f7afff337b57.jpg" />
+            <img id="mid" src="https://mpd-biblio-covers.imgix.net/9781466804807.jpg" />
           </div>
           <div class="figures">
-            <img alt="Brand logo"  src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/1bcea8105505099.5f7afff337b57.jpg"/>
+            <img src="https://lauradesignsite.files.wordpress.com/2016/02/13.jpg"/>
           </div>
       </div>
     </div>
@@ -68,30 +85,35 @@ export default {
   padding: 1rem;
   background-color:#f7f6f0;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
-  height: 40%;
+  height: 35%;
 }
 
 .brand {
   display: flex;
   flex-direction: row;
+  height: 30rem;
+  padding: 3rem;
+
 }
 
 .presentation {
   display: flex;
   flex-direction: column;
   width: 100rem;
+ 
 }
 .title {
   font-family: Georgia, 'Times New Roman', Times, serif;
   color: #2c3e50;
-  text-justify:inter-word
+  text-justify:inter-word;
+  height: 50%;
+  font-size: 2rem;
 }
 
 .logo {
-  margin: 0 auto;
-  width: 100%;
-  height: 50%;
-  object-fit:contain;
+  width: 70%;
+  height: 100%;
+  object-fit:fill;
 }
 
 
@@ -100,7 +122,8 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  height: 18rem;
+  height: 25rem;
+  
 }
 
 .figures {
@@ -121,7 +144,7 @@ export default {
 .figures-wrapper #mid img{
   width: 100%;   
   height: 100%;
-  object-fit: cover;
+  object-fit:fill;
   border-radius: 0 0rem 10rem 10rem;
 }
 
@@ -130,6 +153,18 @@ export default {
   height: 100%;
   object-fit: cover;
   border-radius: 10rem 10rem 0 0;
+}
+
+@media (max-width: 800px) {
+  .figures-wrapper {
+    display: none;
+  }
+  .presentation {
+    align-items: center;
+  }
+  .title {
+    text-align: justify;
+  }
 }
 
 

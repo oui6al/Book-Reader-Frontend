@@ -1,5 +1,6 @@
 <template>
     <div>
+      <button @click="goBack">Retour</button>
       <div v-html="htmlContent"></div>
     </div>
 </template>
@@ -25,6 +26,11 @@ export default {
             this.htmlContent = response.data;
          });
      });
+  },
+  methods: {
+    goBack() {
+      this.$router.back();
+    },
   },
 }
 </script>
