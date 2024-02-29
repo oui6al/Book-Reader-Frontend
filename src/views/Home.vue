@@ -2,6 +2,7 @@
 import Search from '../components/Search.vue';
 import bookshelves from '../components/bookshelves.vue';
 import axios from 'axios';
+import server from '@/config';
 
 export default {
   components: {
@@ -24,7 +25,7 @@ export default {
       sessionStorage.setItem('advancedSearch', true);
       this.query = searchQuery;
       this.isAdvancedSearch = true;
-      axios.post('http://localhost:3000/api/advanced-search/', {query: searchQuery})
+      axios.post(server + '/api/advanced-search/', {query: searchQuery})
       .then((response) => {
         console.log(response.data);
         this.books = response.data;
@@ -37,7 +38,7 @@ export default {
       sessionStorage.setItem('searchQuery', searchQuery);
       sessionStorage.setItem('advancedSearch', false);
       this.isAdvancedSearch = false;
-      axios.post('http://localhost:3000/api/search', {query: searchQuery})
+      axios.post(server + '/api/search', {query: searchQuery})
       .then((response) => {
         console.log(response.data);
         this.books = response.data;
@@ -46,7 +47,7 @@ export default {
     },
     resort(sortOption){
       console.log(sortOption);
-      axios.post('http://localhost:3000/api/sort', {books: this.books.map(book => book.id), option: sortOption})
+      axios.post(server + '/api/sort', {books: this.books.map(book => book.id), option: sortOption})
       .then((response) => {
         console.log(response.data);
         this.books = response.data;
