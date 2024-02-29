@@ -12,13 +12,16 @@ export default {
     return {
       books: [],
       result_title: '',
-      
+      isAdvancedSearch: false,
+      query: '',
     }
   },
   methods: {
     advancedSearch(searchQuery){
       sessionStorage.setItem('searchQuery', searchQuery);
       sessionStorage.setItem('advancedSearch', true);
+      this.query = searchQuery;
+      this.isAdvancedSearch = true;
       axios.post('http://localhost:3000/api/advanced-search/', {query: searchQuery})
       .then((response) => {
         console.log(response.data);
@@ -27,13 +30,24 @@ export default {
       })
     },
     simpleSearch(searchQuery){  
+      this.query = searchQuery;
       sessionStorage.setItem('searchQuery', searchQuery);
       sessionStorage.setItem('advancedSearch', false);
+      this.isAdvancedSearch = false;
       axios.post('http://localhost:3000/api/search', {query: searchQuery})
       .then((response) => {
         console.log(response.data);
         this.books = response.data;
         this.result_title = "Résultats de la recherche :"
+      })
+    },
+    resort(sortOption){
+      console.log(sortOption);
+      axios.post('http://localhost:3000/api/sort', {books: this.books.map(book => book.id), option: sortOption})
+      .then((response) => {
+        console.log(response.data);
+        this.books = response.data;
+        this.result_title = "Résultats de la recherche triés par : " + sortOption;
       })
     }
   },
@@ -74,6 +88,13 @@ export default {
     <Search @advanced-search="(query) => advancedSearch(query)" 
       @simple-search="(query) => simpleSearch(query)"
       />
+  </div>
+  <div>
+    <select id="sortOption">
+      <option value="relevancy" @click="(isAdvancedSearch) ? advancedSearch(query) : simpleSearch(query)">Relevancy</option>
+      <option value="betweeness" @click="resort('betweenness')">Betweeness</option>
+      <option value="closeness" @click="resort('closeness')">Closeness</option>
+    </select>
   </div>
   <bookshelves :books="books" :title="result_title"></bookshelves>
 </template>

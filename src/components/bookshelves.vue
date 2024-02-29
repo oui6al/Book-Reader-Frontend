@@ -73,9 +73,8 @@ export default {
 .book-image {
   width: 150px;
   height: 200px;
-  object-fit: cover;
+  object-fit: fill;
   box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 10px 5px 0 0;
   cursor: pointer;
 }
 
