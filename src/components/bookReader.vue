@@ -7,6 +7,7 @@
   
 <script>
 import axios from 'axios';
+import { server } from '../config';
 export default {
   props: {
     bookId: {
@@ -20,7 +21,7 @@ export default {
     };
   },
   mounted() {
-      axios.get('http://localhost:3000/api/book/'+ this.bookId)
+      axios.get(server + '/api/book/'+ this.bookId)
       .then((response) => {
          axios.post("http://localhost:3000/api/getContent/",{url: response.data.formats['text/html']}).then((response) => {
             this.htmlContent = response.data;
