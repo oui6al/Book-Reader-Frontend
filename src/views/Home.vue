@@ -11,6 +11,8 @@ export default {
   data() {
     return {
       books: [],
+      historyBooks: [],
+      suggestionBooks: [],
       result_title: '',
       isAdvancedSearch: false,
       query: '',
@@ -28,7 +30,8 @@ export default {
         this.books = response.data;
         this.result_title = "Résultats de la recherche :"
       })
-    },
+    }
+    ,
     simpleSearch(searchQuery){  
       this.query = searchQuery;
       sessionStorage.setItem('searchQuery', searchQuery);
@@ -49,10 +52,23 @@ export default {
         this.books = response.data;
         this.result_title = "Résultats de la recherche triés par : " + sortOption;
       })
+    },
+    loadHistoryBooks() {
+      const storedBooks = JSON.parse(localStorage.getItem('historyBooks')) || [];
+      this.historyBooks = storedBooks;
+    },
+    getSuggestionBooks(){
+      const bookIds = this.historyBooks.map(book => book.id);
+      axios.post('http://localhost:3000/api/getSuggestions', {bookIds: bookIds})
+      .then((response) => {
+        this.suggestionBooks = response.data;
+      });
     }
   },
   mounted(){
     const searchQuery = sessionStorage.getItem('searchQuery');
+    this.loadHistoryBooks();
+    this.getSuggestionBooks();
     if(searchQuery && sessionStorage.getItem('advancedSearch') === 'true'){
       this.advancedSearch(sessionStorage.getItem('searchQuery'));
     }
@@ -96,7 +112,7 @@ export default {
       <option value="closeness" @click="resort('closeness')">Closeness</option>
     </select>
   </div>
-  <bookshelves :books="books" :title="result_title"></bookshelves>
+  <bookshelves :books="books" :historyBooks="historyBooks" :suggestionBooks="suggestionBooks" :title="result_title"></bookshelves>
 </template>
 
 <style scoped> 
